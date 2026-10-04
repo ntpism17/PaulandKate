@@ -1,0 +1,43 @@
+---
+import { Image } from 'astro:assets';
+import jar from '../assets/products/almond-mosaic.jpg';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const ingredients = [1, 2, 3, 4, 5, 6] as const;
+const numerals = ['i.', 'ii.', 'iii.', 'iv.', 'v.', 'vi.'];
+---
+<section class="banner" aria-label={t('banner.title')}>
+  <Image src={jar} alt="" widths={[800, 1272]} sizes="100vw" />
+  <div class="banner-box">
+    <h2>{t('banner.title')}</h2>
+    <a href="#story" class="u-link">{t('cta.discover')}</a>
+  </div>
+</section>
+
+<section class="story" id="story">
+  <div class="story-grid">
+    <div class="story-img">
+      <Image src={jar} alt="Almond Mosaic" widths={[500, 900]} sizes="(max-width: 860px) 100vw, 50vw" class="px" />
+    </div>
+    <div class="story-text">
+      <h2 class="title"><small>{t('story.eyebrow')}</small>{t('story.title')}</h2>
+      <p set:html={t('story.p1')} />
+      <h3>{t('story.h2')}</h3>
+      <p>{t('story.p2')}</p>
+      <h3>{t('story.h3')}</h3>
+      <p>{t('story.p3')}</p>
+    </div>
+  </div>
+
+  <div class="ingredients">
+    <h2 class="title"><small>{t('ing.eyebrow')}</small>{t('ing.title')}</h2>
+    <div class="ing-row">
+      {ingredients.map((n, i) => (
+        <div class="ing"><span class="n">{numerals[i]}</span><h4>{t(`ing.${n}.t`)}</h4><p>{t(`ing.${n}.d`)}</p></div>
+      ))}
+    </div>
+  </div>
+</section>

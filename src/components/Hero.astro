@@ -1,0 +1,20 @@
+---
+import { Image } from 'astro:assets';
+import jar from '../assets/products/almond-mosaic.jpg';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="hero" id="hero">
+  <Image src={jar} alt="A glass jar of Paul & Kate Almond Mosaic" widths={[600, 900, 1272]} sizes="(max-width: 860px) 100vw, 64vw" loading="eager" fetchpriority="high" />
+  <div class="hero-text">
+    <div class="hero-inner">
+      <h1 set:html={t('hero.title')} />
+      <p class="th">{t('hero.tagline')}</p>
+      <p class="copy">{t('hero.copy')}</p>
+      <a href="#creations" class="u-link">{t('cta.discover')}</a>
+    </div>
+  </div>
+</section>

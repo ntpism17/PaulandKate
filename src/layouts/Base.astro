@@ -1,0 +1,51 @@
+---
+import Analytics from '@vercel/analytics/astro';
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations, type Lang } from '../i18n/ui';
+import '../styles/global.css';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+// Strings the browser scripts need, in the page's language
+const clientStrings = {
+  added: t('product.added'),
+  interested: t('enq.interested'),
+  sending: t('enq.sending'),
+  send: t('enq.send'),
+  missing: t('enq.missing'),
+  thanks: t('enq.thanks'),
+  error: t('enq.error'),
+};
+const ogImage = new URL('/favicon.png', Astro.site);
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t('meta.title')}</title>
+    <meta name="description" content={t('meta.description')} />
+    <link rel="canonical" href={new URL(getRelativeLocaleUrl(lang, ''), Astro.site)} />
+    <link rel="alternate" hreflang="en" href={new URL(getRelativeLocaleUrl('en', ''), Astro.site)} />
+    <link rel="alternate" hreflang="th" href={new URL(getRelativeLocaleUrl('th', ''), Astro.site)} />
+    <meta property="og:title" content={t('meta.title')} />
+    <meta property="og:description" content={t('meta.description')} />
+    <meta property="og:image" content={ogImage} />
+    <link rel="icon" href="/favicon.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,400&family=Jost:wght@300;400;500;600&family=IBM+Plex+Sans+Thai:wght@300;400;500;600&family=Quicksand:wght@500&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <slot />
+    <script type="application/json" id="i18n-strings" set:html={JSON.stringify(clientStrings)} />
+    <Analytics />
+    <script>
+      import '../scripts/main';
+      import '../scripts/motion';
+    </script>
+  </body>
+</html>

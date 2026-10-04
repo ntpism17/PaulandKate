@@ -1,0 +1,42 @@
+---
+import { Image } from 'astro:assets';
+import jar from '../assets/products/almond-mosaic.jpg';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<section class="enquiry" id="enquire">
+  <div class="enquiry-bg" aria-hidden="true"><Image src={jar} alt="" widths={[800, 1272]} sizes="100vw" class="px" /></div>
+  <div class="enquiry-inner">
+    <div>
+      <h2>{t('enq.title')}</h2>
+      <ul class="perks">
+        <li><span set:html={t('enq.perk1')} /></li>
+        <li><span set:html={t('enq.perk2')} /></li>
+        <li><span set:html={t('enq.perk3')} /></li>
+      </ul>
+      <div class="contact-lines">
+        <a href="mailto:[EMAIL ADDRESS]">[EMAIL ADDRESS]</a><br />
+        LINE: [LINE ID] &nbsp;·&nbsp; [PHONE NUMBER]
+      </div>
+    </div>
+
+    <form class="form" id="enquiryForm" novalidate>
+      <input type="hidden" name="language" value={lang} />
+      <label class="sr" for="business">{t('enq.business')}</label>
+      <input id="business" name="business" placeholder={t('enq.business')} autocomplete="organization" />
+      <label class="sr" for="type">{t('enq.type')}</label>
+      <select id="type" name="type">
+        {t('enq.types').map(o => <option>{o}</option>)}
+      </select>
+      <label class="sr" for="contact">{t('enq.contact')}</label>
+      <input class="full" id="contact" name="contact" placeholder={t('enq.contact')} />
+      <label class="sr" for="message">{t('enq.message')}</label>
+      <textarea class="full" id="message" name="message" placeholder={t('enq.message')}></textarea>
+      <button type="submit">{t('enq.send')}</button>
+      <p class="form-note full" id="formNote" role="status" aria-live="polite"></p>
+    </form>
+  </div>
+</section>

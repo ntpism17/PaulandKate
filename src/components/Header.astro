@@ -1,0 +1,43 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+<header class="header" id="header">
+  <div class="header-top">
+    <div class="header-left">
+      <button class="menu-btn" id="menuBtn" aria-label={t('nav.menu')} aria-expanded="false"><span></span><span></span><span></span></button>
+      <nav class="utility" aria-label="Secondary">
+        <a href="#story">{t('nav.story')}</a>
+        <a href="#how">{t('nav.wholesale')}</a>
+        <a href="#enquire">{t('nav.contact')}</a>
+      </nav>
+    </div>
+    <a href="#top" class="wordmark" aria-label="Paul & Kate">
+      <b>Paul &amp; Kate</b>
+      <small>happy no guilty</small>
+    </a>
+    <div class="tools">
+      <span class="lang">
+        {lang === 'en' ? <b>EN</b> : <a href={getRelativeLocaleUrl('en', '')} hreflang="en">EN</a>}
+        <span> | </span>
+        {lang === 'th' ? <b>TH</b> : <a href={getRelativeLocaleUrl('th', '')} hreflang="th">TH</a>}
+      </span>
+      <a href="#enquire" class="icon-btn" aria-label={t('nav.enquiryList')}>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14l-1.2 12.2a1 1 0 0 1-1 .8H7.2a1 1 0 0 1-1-.8L5 8Z"/><path d="M9 10V6.5a3 3 0 0 1 6 0V10"/></svg>
+        <span class="count" id="count">0</span>
+      </a>
+    </div>
+  </div>
+  <nav class="cat-nav" id="catNav" aria-label="Primary">
+    <a href="#creations">{t('nav.all')}</a>
+    <a href="#world">{t('nav.meringues')}</a>
+    <a href="#chocolate-strawberry-cookies">{t('nav.cookies')}</a>
+    <a href="#brownie-crisps">{t('nav.brownie')}</a>
+    <a href="#almond-mosaic">{t('nav.almond')}</a>
+    <a href="#how">{t('nav.gifting')}</a>
+  </nav>
+</header>
