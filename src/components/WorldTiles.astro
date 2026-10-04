@@ -1,0 +1,36 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import glass from '../assets/products/milky-meringue-glass.webp';
+import { useTranslations, pick, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const products = Object.fromEntries((await getCollection('products')).map(p => [p.id, p]));
+const p = (id: string) => products[id]!;
+
+// Grid layout: one wide tile, four thirds, then a row of three
+const tiles = [
+  { size: 'wide', href: '#milky-meringue', img: p('milky-meringue').data.image, label: t('tile.meringues'), small: t('tile.bakedNotFried') },
+  { size: 'third', href: '#almond-mosaic', img: p('almond-mosaic').data.image, label: pick(p('almond-mosaic').data.name, lang), small: t('tile.signature') },
+  { size: 'third', href: '#chocolate-strawberry-cookies', img: p('chocolate-strawberry-cookies').data.image, label: t('nav.cookies'), position: '50% 15%' },
+  { size: 'third', href: '#brownie-crisps', img: p('brownie-crisps').data.image, label: pick(p('brownie-crisps').data.name, lang) },
+  { size: 'third', href: '#superfood-meringue', img: p('superfood-meringue').data.image, label: pick(p('superfood-meringue').data.name, lang), small: t('tile.noSugar') },
+  { size: 'quarter trio', href: '#strawberry-meringue', img: p('strawberry-meringue').data.image, label: pick(p('strawberry-meringue').data.name, lang) },
+  { size: 'quarter trio', href: '#red-velvet-meringue', img: p('red-velvet-meringue').data.image, label: pick(p('red-velvet-meringue').data.name, lang) },
+  { size: 'quarter trio', href: '#how', img: glass, label: t('nav.gifting'), small: t('tile.forCafes') },
+];
+---
+<section class="world" id="world">
+  <h2 class="title">{t('world.title')}</h2>
+  <div class="tiles">
+    {tiles.map(tile => (
+      <a href={tile.href} class={`tile ${tile.size}`}>
+        <Image src={tile.img} alt="" widths={[400, 800, 1200]} sizes={tile.size === 'wide' ? '(max-width: 860px) 100vw, 50vw' : '(max-width: 860px) 100vw, 33vw'} class="px" style={tile.position ? `object-position: ${tile.position}` : undefined} />
+        <span class="tile-label">{tile.small && <small>{tile.small}</small>}{tile.label}</span>
+      </a>
+    ))}
+  </div>
+</section>

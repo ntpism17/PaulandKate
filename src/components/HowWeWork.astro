@@ -1,0 +1,26 @@
+---
+import { useTranslations, type Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const steps = [
+  { n: 1, numeral: 'i.', style: '' },
+  { n: 2, numeral: 'ii.', style: '--step-bg: var(--cream)' },
+  { n: 3, numeral: 'iii.', style: '--step-bg: var(--caramel); --step-ink: var(--white)' },
+  { n: 4, numeral: 'iv.', style: '--step-bg: var(--espresso); --step-ink: var(--caramel-light)' },
+] as const;
+---
+<section class="how" id="how">
+  <h2 class="title"><small>{t('how.eyebrow')}</small>{t('how.title')}</h2>
+  <p class="lede">{t('how.lede')}</p>
+  <div class="steps">
+    {steps.map(s => (
+      <div class="step">
+        <div class="step-img" style={s.style}><span>{s.numeral}</span></div>
+        <h3>{t(`how.${s.n}.t`)}</h3>
+        <p>{t(`how.${s.n}.d`)}</p>
+      </div>
+    ))}
+  </div>
+</section>

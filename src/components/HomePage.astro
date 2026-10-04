@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import WorldTiles from './WorldTiles.astro';
+import Creations from './Creations.astro';
+import Story from './Story.astro';
+import HowWeWork from './HowWeWork.astro';
+import Enquiry from './Enquiry.astro';
+import Assurance from './Assurance.astro';
+import Footer from './Footer.astro';
+import type { Lang } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<Base lang={lang}>
+  <Header lang={lang} />
+  <main id="top">
+    <Hero lang={lang} />
+    <WorldTiles lang={lang} />
+    <Creations lang={lang} />
+    <Story lang={lang} />
+    <HowWeWork lang={lang} />
+    <Enquiry lang={lang} />
+    <Assurance lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Base>
