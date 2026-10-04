@@ -3,11 +3,53 @@
 const strings: Record<string, string> = JSON.parse(document.getElementById('i18n-strings')?.textContent || '{}');
 const fill = (s: string, vars: Record<string, string>) => s.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? '');
 
-// ----- Mobile menu -----
+// ----- Header: slims down on scroll -----
 const header = document.getElementById('header')!;
+// The phone menu opens right below the bar, wherever the bar currently sits
+const setHeaderH = () => document.documentElement.style.setProperty('--header-bottom', `${header.getBoundingClientRect().bottom}px`);
+const onHeaderScroll = () => { header.classList.toggle('scrolled', scrollY > 40); setHeaderH(); };
+addEventListener('scroll', onHeaderScroll, { passive: true });
+addEventListener('resize', setHeaderH);
+onHeaderScroll();
+
+// ----- Collapse to the menu button when the links don't fit beside the centred logo -----
+// (Thai and English labels need different widths, so measure rather than use a fixed breakpoint)
+const nav = document.getElementById('mainNav')!;
+const brand = header.querySelector('.brand')!;
+function fitHeader() {
+  header.classList.remove('compact');
+  const tooNarrow = matchMedia('(max-width: 860px)').matches;
+  const overflows = nav.scrollWidth > nav.clientWidth + 1 || nav.getBoundingClientRect().right > brand.getBoundingClientRect().left - 16;
+  const compact = tooNarrow || overflows;
+  header.classList.toggle('compact', compact);
+  if (!compact) setMenu(false);
+  setHeaderH();
+}
+
+// ----- Phone menu (full screen) -----
 const menuBtn = document.getElementById('menuBtn')!;
-menuBtn.addEventListener('click', () => menuBtn.setAttribute('aria-expanded', String(header.classList.toggle('open'))));
-document.querySelectorAll('#catNav a').forEach(a => a.addEventListener('click', () => header.classList.remove('open')));
+const setMenu = (open: boolean) => {
+  setHeaderH();
+  header.classList.toggle('open', open);
+  menuBtn.setAttribute('aria-expanded', String(open));
+  document.documentElement.style.overflow = open ? 'hidden' : '';
+  dispatchEvent(new CustomEvent('menu:toggle', { detail: open }));   // lets the smooth scroller pause
+};
+menuBtn.addEventListener('click', () => setMenu(!header.classList.contains('open')));
+document.querySelectorAll('#mainNav a').forEach(a => a.addEventListener('click', () => setMenu(false)));
+addEventListener('keydown', e => { if (e.key === 'Escape') setMenu(false); });
+
+fitHeader();
+addEventListener('resize', fitHeader);
+document.fonts?.ready.then(fitHeader);
+
+// ----- Active section dot in the nav -----
+const sectionLinks = [...document.querySelectorAll<HTMLAnchorElement>('#mainNav a[data-section]')];
+const sectionObserver = new IntersectionObserver(entries => entries.forEach(e => {
+  if (!e.isIntersecting) return;
+  sectionLinks.forEach(a => a.classList.toggle('active', a.hash === `#${e.target.id}`));
+}), { rootMargin: '-45% 0px -50% 0px' });
+sectionLinks.forEach(a => { const el = document.querySelector(a.hash); if (el) sectionObserver.observe(el); });
 
 // ----- Back to top -----
 const toTop = document.getElementById('toTop')!;
