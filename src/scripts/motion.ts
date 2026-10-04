@@ -10,11 +10,12 @@ const mm = gsap.matchMedia();
 
 mm.add('(prefers-reduced-motion: no-preference)', () => {
   // ----- Smooth scrolling -----
-  const lenis = new Lenis({ duration: 1.1, anchors: { offset: -120 } });
+  const lenis = new Lenis({ duration: 1.1, anchors: true });
   lenis.on('scroll', ScrollTrigger.update);
   const raf = (time: number) => lenis.raf(time * 1000);
   gsap.ticker.add(raf);
   gsap.ticker.lagSmoothing(0);
+  addEventListener('menu:toggle', e => ((e as CustomEvent<boolean>).detail ? lenis.stop() : lenis.start()));
 
   // ----- Hero: jar zooms and drifts, headline lifts away -----
   const heroTl = gsap.timeline({

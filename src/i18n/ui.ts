@@ -18,6 +18,9 @@ export const ui = {
     'nav.gifting': 'Wholesale & Gifting',
     'nav.menu': 'Menu',
     'nav.enquiryList': 'Enquiry list',
+    'nav.enquire': 'Enquire',
+    'bar.announce': 'Wholesale & gifting orders now open for cafés, hotels and companies.',
+    'bar.cta': 'Request the menu',
 
     'hero.title': 'A little bit<br />cheat day',
     'hero.tagline': 'ขนมอบที่อร่อยอย่างมีความสุข ไม่รู้สึกผิด',
@@ -107,6 +110,9 @@ export const ui = {
     'nav.gifting': 'ขายส่งและของขวัญ',
     'nav.menu': 'เมนู',
     'nav.enquiryList': 'รายการสอบถาม',
+    'nav.enquire': 'สอบถาม',
+    'bar.announce': 'เปิดรับออร์เดอร์ขายส่งและของขวัญสำหรับคาเฟ่ โรงแรม และองค์กรแล้ว',
+    'bar.cta': 'ขอเมนู',
 
     'hero.title': 'A little bit<br />cheat day',
     'hero.tagline': 'ขนมอบที่อร่อยอย่างมีความสุข ไม่รู้สึกผิด',
